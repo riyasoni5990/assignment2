@@ -1,0 +1,44 @@
+#task 1-------
+
+python file----
+
+import os
+for i in range(1,101):
+	if i<25:
+		os.system("docker run -itd --restart unless-stopped --name AdhocNW%d alpine ping fb.com" %i)
+	if i<50 and i>25:
+		os.system("docker run -itd --restart unless-stopped --name AdhocNW%d fedora ifconfig" %i)
+	if i<75 and i>50:
+		os.system("docker run -itd --restart unless-stopped --name AdhocNW%d centos date" %i)
+	if i<101 and i>75:
+		os.system("docker run -itd --restart unless-stopped --name AdhocNW%d java ping google.com" %i)
+    
+#task 2------
+
+docker ps -a --format "table {{.Names}}\t{{.CreatedAt}}" >> myfile.txt
+
+    
+#task 3------
+Dockerfile--
+
+FROM ubuntu:14.04
+
+RUN apt-get update
+RUN apt-get install -y firefox
+RUN groupadd -g 1000 riya
+RUN useradd -d /home/riya -s /bin/bash -m riya -u 1000 -g 1000
+USER riya
+ENV HOME /home/riya
+CMD /usr/bin/firefox
+
+Build the image---
+
+docker build -t gui .
+
+Run the container---
+
+docker run -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY -h $HOSTNAME -v $HOME/.Xauthority:/home/riya/.Xauthority gui
+
+#task 4
+
+docker stats --all --no-stream --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}"
